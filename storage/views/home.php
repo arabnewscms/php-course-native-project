@@ -20,12 +20,12 @@ view('layout.header', ['title'=>trans('main.home')]);
 <?php endif; ?>
  
 
-<?php
+<?php 
 $email_valid = get_error('email');
 $mobile_valid = get_error('mobile');
 $address_valid = get_error('address');
 end_errors();
-?>
+ ?>
  
  
 <form method="post"

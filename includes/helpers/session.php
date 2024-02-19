@@ -43,7 +43,7 @@ if (!function_exists('session_flash')) {
         if (!is_null($value)) {
             $_SESSION[$key] = $value;
         }
-        $session = isset($_SESSION[$key]) ? $_SESSION[$key] : '';
+        $session = isset($_SESSION[$key]) ? decrypt($_SESSION[$key]) : '';
         session_forget($key);
         return $session;
     }

@@ -32,7 +32,8 @@ require_once __DIR__."/../includes/app.php";
 // store_file(from,to)
 // remove_folder('storage/images'); remove folder or directory
 
-
+//https://github.com/arabnewscms/php-course-native-project
+//https://getbootstrap.com/docs/5.3/examples/
 route_init();
 if(!empty($GLOBALS['query'])) {
     mysqli_free_result($GLOBALS['query']);

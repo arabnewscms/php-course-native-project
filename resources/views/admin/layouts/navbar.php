@@ -7,9 +7,9 @@
       <ul class="nav nav-pills">
   
         <?php if(session('locale') == 'ar'): ?>
-        <li class="nav-item"><a href="<?php echo url(ADMIN.'/lang?lang=en'); ?>" class="nav-link">En</a></li>
+        <li class="nav-item"><a href="{{url(ADMIN.'/lang?lang=en')}}" class="nav-link">En</a></li>
         <?php else: ?>
-          <li class="nav-item"><a href="<?php echo url(ADMIN.'/lang?lang=ar'); ?>" class="nav-link">ع</a></li>
+          <li class="nav-item"><a href="{{url(ADMIN.'/lang?lang=ar')}}" class="nav-link">ع</a></li>
         <?php endif; ?>
       
       </ul>

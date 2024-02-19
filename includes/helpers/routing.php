@@ -88,6 +88,20 @@ if (!function_exists('redirect')) {
 }
 
 /**
+ * back to previous Page
+ *
+ * @param string $path The path to redirect to.
+ * @return void
+ */
+if (!function_exists('back')) {
+    function back()
+    {
+        header('Location: '.$_SERVER['HTTP_REFERER']);
+        exit();
+    }
+}
+
+/**
  * Generate a URL for a given segment.
  *
  * @param string $segment The URL segment.
@@ -99,6 +113,20 @@ if (!function_exists('url')) {
         $url = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
         $url .= $_SERVER['HTTP_HOST'];
         return $url . '/'.public_().'/' . ltrim($segment, '/');
+    }
+}
+/**
+ * Generate a Admin URL for a given segment.
+ *
+ * @param string $segment The URL segment.
+ * @return string The generated URL.
+ */
+if (!function_exists('aurl')) {
+    function aurl($segment)
+    {
+        $url = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+        $url .= $_SERVER['HTTP_HOST'];
+        return $url . '/'.public_().'/'.ADMIN .'/'. ltrim($segment, '/');
     }
 }
 

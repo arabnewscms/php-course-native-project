@@ -3,7 +3,7 @@
 
 
 if(!function_exists('validation')) {
-    function validation(array $attributes, array $trans=null,$http_header='redirect')
+    function validation(array $attributes, array $trans=null,$http_header='redirect',$back=null)
     {
         $validations = [];
         $values = [];
@@ -42,7 +42,11 @@ if(!function_exists('validation')) {
                 // End loop to extract attributes
                 session('old', json_encode($values));
                 session('errors', json_encode($validations));
-                redirect('/');
+                if(!is_null($back)){
+                    redirect($back);
+                }else{
+                    back();
+                }
             }elseif($http_header == 'api'){
                 return json_encode($validations,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
             }
