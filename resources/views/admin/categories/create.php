@@ -24,9 +24,10 @@ $name = get_error('name');
 $icon = get_error('icon');
 $description = get_error('description');
 end_errors();
+ 
 @endphp  
 
-  <form method="post" action="{{aurl('categories/add')}}" enctype="multipart/form-data">
+  <form method="post" action="{{aurl('categories/create')}}" enctype="multipart/form-data">
     <input type="hidden" name="_method" value="post" />
     <div class="row">
         <div class="col-md-6">

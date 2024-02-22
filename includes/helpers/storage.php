@@ -41,7 +41,7 @@ if(!function_exists('remove_folder')) {
 
 
 if(!function_exists('store_file')) {
-    function store_file(array $from, string $to):bool
+    function store_file(array $from, string $to):bool|string
     {
         if(isset($from['tmp_name'])) {
             $to_path = '/'.ltrim($to, '/');
@@ -53,8 +53,31 @@ if(!function_exists('store_file')) {
                 mkdir($check_path, 0777, true);
             }
             move_uploaded_file($from['tmp_name'], $path);
-            return true;
+            return $to;
         }
         return false;
+    }
+}
+
+if(!function_exists('file_ext')) {
+    function file_ext(array $file_name):array
+    {
+        if(!empty($file_name['name'])){
+            $fext = explode('.',$file_name['name']);
+            $file_ext = end($fext);
+            $hash_name = md5(10).rand(000,999).'.'.$file_ext;
+            return [
+                'name'=>$file_name['name'],
+                'hash_name'=>$hash_name,
+                'ext'=>$file_ext,
+            ];
+        }else{
+            return [
+                'name'=>'',
+                'hash_name'=>'',
+                'ext'=>'',
+            ];
+        }
+        
     }
 }

@@ -10,13 +10,14 @@ if(!function_exists('validation')) {
         // start loop to extract attributes
         foreach($attributes as $attribute=>$rules) {
             $value = request($attribute);
+            
             $values[$attribute] = $value;
             $attribute_validte = [];
             $final_attr = isset($trans[$attribute])?$trans[$attribute]:$attribute;
             foreach(explode('|', $rules) as $rule) {
                 if($rule == 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.email'));
-                } elseif($rule == 'required' && (is_null($value) || empty($value))) {
+                } elseif($rule == 'required' && (is_null($value) || empty($value) || (isset($value['tmp_name']) && empty($value['tmp_name'])))) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.required'));
                 } elseif($rule == 'integer' && !filter_var((int) $value, FILTER_VALIDATE_INT)) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.integer'));
@@ -24,6 +25,8 @@ if(!function_exists('validation')) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.string'));
                 }elseif($rule == 'numeric' && !is_numeric($value)){
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.numeric'));
+                }elseif($rule == 'image' && getimagesize($value['tmp_name']) === false){
+                    $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.image'));
                 }
             }
            
