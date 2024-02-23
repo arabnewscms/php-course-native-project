@@ -18,19 +18,21 @@ if(!function_exists('storage')) {
 
 
 if(!function_exists('storage_url')) {
-    function storage_url(string $path):string
+    function storage_url(string $path=null):string
         {
-         return url('storage/'.$path);
+         return !empty($path)? url('storage/'.$path):'';
         }
     }
 
 
 
 if(!function_exists('delete_file')) {
-    function delete_file($path)
+    function delete_file($to_path)
         {
+            $path = config('files.storage_files_path').$to_path;
             if(file_exists($path)){
-                return unlink($path);
+                 unlink($path);
+                 return true;
             }
             return false;
         }

@@ -30,7 +30,8 @@ $catgories = db_paginate("categories", "",10);
               <td><?php echo  $category['description'] ; ?></td>
               <td>
                
-                <a href="<?php echo  aurl('categories/show?id='.$category['id']) ; ?>"><?php echo trans('admin.show'); ?></a>
+                <a href="<?php echo  aurl('categories/show?id='.$category['id']) ; ?>"><i class="fa-regular fa-eye"></i></a>
+                <a href="<?php echo  aurl('categories/edit?id='.$category['id']) ; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
               </td>
             </tr>
             <?php endwhile; ?>

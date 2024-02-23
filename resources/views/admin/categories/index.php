@@ -30,7 +30,8 @@ $catgories = db_paginate("categories", "",10);
               <td>{{ $category['description'] }}</td>
               <td>
                
-                <a href="{{ aurl('categories/show?id='.$category['id']) }}">{{trans('admin.show')}}</a>
+                <a href="{{ aurl('categories/show?id='.$category['id']) }}"><i class="fa-regular fa-eye"></i></a>
+                <a href="{{ aurl('categories/edit?id='.$category['id']) }}"><i class="fa-solid fa-pen-to-square"></i></a>
               </td>
             </tr>
             <?php endwhile; ?>
