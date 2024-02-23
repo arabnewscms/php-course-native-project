@@ -17,17 +17,16 @@ if(!function_exists('view')) {
 }
 
 if(!function_exists('view_engine')) {
-    function view_engine(string $view,$vars){
+    function view_engine(string $view,array $vars=null){
         
         if(!is_null($vars) && is_array($vars)) {
             foreach($vars as $key=>$value) {
                 ${$key} =  $value;
             }
         }
-
-        $file_path = explode('/', $view);
-        $file_name = end($file_path);
-        $save_to_storage = base_path('storage/views/'.$file_name);
+ 
+        $file_hash_name  = md5($view);
+        $save_to_storage = base_path('storage/views/'.$file_hash_name.'.php');
         //if(!file_exists($save_to_storage)){
 
             $file = file_get_contents($view);

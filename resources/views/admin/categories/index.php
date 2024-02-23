@@ -24,10 +24,13 @@ $catgories = db_paginate("categories", "",10);
             <tr>
               <td>{{ $category['id'] }}</td>
               <td>{{ $category['name'] }}</td>
-              <td>{{ $category['icon'] }}</td>
+              <td>
+                <img src="{{ storage_url($category['icon']) }}" style="width:25px;height:25px;" />
+              </td>
               <td>{{ $category['description'] }}</td>
               <td>
-                edit + delete
+               
+                <a href="{{ aurl('categories/show?id='.$category['id']) }}">{{trans('admin.show')}}</a>
               </td>
             </tr>
             <?php endwhile; ?>

@@ -17,6 +17,15 @@ if(!function_exists('storage')) {
 }
 
 
+if(!function_exists('storage_url')) {
+    function storage_url(string $path):string
+        {
+         return url('storage/'.$path);
+        }
+    }
+
+
+
 if(!function_exists('delete_file')) {
     function delete_file($path)
         {

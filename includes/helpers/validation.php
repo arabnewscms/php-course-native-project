@@ -25,7 +25,7 @@ if(!function_exists('validation')) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.string'));
                 }elseif($rule == 'numeric' && !is_numeric($value)){
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.numeric'));
-                }elseif($rule == 'image' && getimagesize($value['tmp_name']) === false){
+                }elseif($rule == 'image' && isset($value['tmp_name']) && (!empty($value['tmp_name']) && getimagesize($value['tmp_name']) === false)){
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.image'));
                 }
             }

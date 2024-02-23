@@ -24,10 +24,13 @@ $catgories = db_paginate("categories", "",10);
             <tr>
               <td><?php echo  $category['id'] ; ?></td>
               <td><?php echo  $category['name'] ; ?></td>
-              <td><?php echo  $category['icon'] ; ?></td>
+              <td>
+                <img src="<?php echo  storage_url($category['icon']) ; ?>" style="width:25px;height:25px;" />
+              </td>
               <td><?php echo  $category['description'] ; ?></td>
               <td>
-                edit + delete
+               
+                <a href="<?php echo  aurl('categories/show?id='.$category['id']) ; ?>"><?php echo trans('admin.show'); ?></a>
               </td>
             </tr>
             <?php endwhile; ?>

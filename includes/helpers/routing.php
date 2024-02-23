@@ -52,7 +52,7 @@ if (!function_exists('route_init')) {
         $GET_ROUTES = isset($routes['GET']) ? $routes['GET'] : [];
         $POST_ROUTES = isset($routes['POST']) ? $routes['POST'] : [];
          
-        if(!isset($_POST['_method'])){
+        if(!isset($_POST['_method'])) {
             foreach ($GET_ROUTES as $rget) {
                 if (segment() == $rget['segment']) {
                     view($rget['view']);
@@ -85,10 +85,10 @@ if (!function_exists('route_init')) {
 if (!function_exists('redirect')) {
     function redirect($path)
     {
-        $path = parse_url($path);
-        if(isset($path['scheme']) && isset($path['host'])){
-            header('Location: ' . $path['scheme'].'://'.$path['host'].'/'.$path['path']);
-        }else{
+        $check_path = parse_url($path);
+        if(isset($check_path['scheme']) && isset($check_path['host'])) {
+            header('Location: ' . $path);
+        } else {
             header('Location: ' . url($path));
         }
         exit();

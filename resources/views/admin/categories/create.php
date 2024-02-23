@@ -46,7 +46,7 @@ end_errors();
         <div class="col-md-12">
         <div class="form-group">
           <label for="description">{{trans('cat.desc')}}</label>
-          <textarea name="description" placeholder="{{trans('cat.desc')}}"  class="form-control {{ !empty($description)?'is-invalid':'' }}"></textarea>
+          <textarea name="description" placeholder="{{trans('cat.desc')}}"  class="form-control {{ !empty($description)?'is-invalid':'' }}">{{old('description')}}</textarea>
          </div>
         </div>
     </div>
