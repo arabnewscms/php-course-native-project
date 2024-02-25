@@ -29,7 +29,7 @@ if(!function_exists('storage_url')) {
 if(!function_exists('delete_file')) {
     function delete_file($to_path)
         {
-            $path = config('files.storage_files_path').$to_path;
+            $path = rtrim(config('files.storage_files_path'),'/').'/'.ltrim($to_path,'/');
             if(file_exists($path)){
                  unlink($path);
                  return true;

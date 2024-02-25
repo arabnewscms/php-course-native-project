@@ -1,13 +1,13 @@
 <?php
 ob_start();
-$helpers = ["bcrypt","request","routing","helper","AES","db","session","auth","mail","translation","validation","storage","view"];
+$helpers = ["bcrypt","request","routing","helper","AES","db","session","auth","mail","translation","validation","storage","view","media"];
 
-foreach($helpers as $helper){
+foreach($helpers as $helper) {
     require __DIR__."/helpers/".$helper.".php";
 }
 
 /**
- * session save path 
+ * session save path
  * with set ini and start session
  */
 session_save_path(config('session.session_save_path'));
@@ -35,9 +35,3 @@ if(!$connect) {
 
 require_once base_path('/routes/web.php');
 require_once base_path('/includes/exception_error.php');
- 
-
-
- 
-
-
