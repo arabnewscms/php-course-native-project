@@ -16,8 +16,14 @@
             </li>
             <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2" href="{{ aurl('categories') }}">
-                 
+              <i class="fa-regular fa-rectangle-list"></i>
                 {{ trans('admin.categories') }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="{{ aurl('news') }}">
+              <i class="fa-regular fa-newspaper"></i>
+                {{ trans('admin.news') }}
               </a>
             </li>
              
@@ -35,6 +41,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2" href="{{ url('admin/logout') }}">
+              <i class="fa-solid fa-right-from-bracket"></i>
                 {{ trans('admin.logout') }}
               </a>
             </li>

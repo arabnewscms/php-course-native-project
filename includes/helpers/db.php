@@ -130,25 +130,47 @@ if(!function_exists('db_get')) {
  * @param int $limit
  * @return array
  */
-if(!function_exists('render_paginate')){
-    function render_paginate(int $total_pages):string{
-        $html =  '<ul>';
-        for($i=1;$i <= $total_pages;$i++){
-            $html  .= '<li> <a href="?page='.$i.'">'.$i.'</a> </li>';
+if(!function_exists('render_paginate')) {
+    function render_paginate(int $total_pages):string
+    {
+        $html =  '<ul class="pagination justify-content-center" dir="ltr">';
+        $p_disabled = empty(request('page')) || request('page') == 1?'disabled':'';
+
+        $p_number = !empty(request('page')) && is_numeric(request('page'))
+        && request('page') > 0 
+        && request('page') <= $total_pages?request('page')-1:1;
+
+        $html .=  '<li class="page-item">
+                    <a class="page-link '.$p_disabled.'" href="?page='.$p_number.'" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>';
+        for($i=1;$i <= $total_pages;$i++) {
+            $active = !empty(request('page')) && request('page') == $i?'active':'';
+            $html  .= '<li class="page-item '.$active.'"> <a href="?page='.$i.'" class="page-link">'.$i.'</a> </li>';
         }
+        $n_disabled = !empty(request('page')) && request('page') == $total_pages?'disabled':'';
+        $n_number = !empty(request('page')) && is_numeric(request('page'))
+        && request('page') > 0 
+        && request('page') < $total_pages?request('page')+1:1;
+        $html .='<li class="page-item '.$n_disabled.'">
+        <a class="page-link" href="?page='.$n_number.'" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>';
         $html .='</ul>';
-    return $html;
+        return $html;
 
     }
 }
 
 if(!function_exists('db_paginate')) {
-    function db_paginate(string $table, string $query_str,int $limit=15,string $orderby='asc'):array
+    function db_paginate(string $table, string $query_str, int $limit=15, string $orderby='asc'):array
     {
  
-        if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0){
+        if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) {
             $current_page = $_GET['page']-1;
-        }else{
+        } else {
             $current_page = 0;
         }
  
@@ -157,9 +179,9 @@ if(!function_exists('db_paginate')) {
         $total_records = $count[0];
 
         $start = $current_page * $limit;
-        $total_pages = ceil($total_records / $limit); 
+        $total_pages = ceil($total_records / $limit);
 
-        if($current_page >= $total_pages){
+        if($current_page >= $total_pages) {
             $start = $total_pages+1;
         }
          
