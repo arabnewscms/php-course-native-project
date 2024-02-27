@@ -1,9 +1,21 @@
 <?php
 view('admin.layouts.header', ['title'=>trans('admin.news').'-'.trans('admin.show')]);
 
-
-$news = db_find('news', request('id'));
-
+//request('id')
+$news = db_first('news',"
+JOIN categories on news.category_id = categories.id
+JOIN users on news.user_id = users.id 
+where news.id=".request('id'),"
+news.title,
+news.content,
+news.category_id,
+news.user_id,
+news.image,
+news.description,
+news.id,
+users.name as username , 
+categories.name as category_name");
+ 
 redirect_if(empty($news), aurl('news'));
 
 ?>
@@ -28,7 +40,15 @@ redirect_if(empty($news), aurl('news'));
 			<div class="form-group">
 				<label for="category_id">{{trans('news.category_id')}}</label>
 
-				 {{ $news['category_id'] }}
+				<a href="{{ aurl('categories/show?id='.$news['category_id']) }}">{{ $news['category_name'] }}</a>
+
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label for="user_id">{{trans('news.user_id')}}</label>
+
+				<a href="{{ aurl('users/show?id='.$news['user_id']) }}">{{ $news['username'] }}</a>
 
 			</div>
 		</div>

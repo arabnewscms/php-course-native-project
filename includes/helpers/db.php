@@ -92,9 +92,9 @@ if(!function_exists('db_find')) {
  * @param int $id
  */
 if(!function_exists('db_first')) {
-    function db_first(string $table, string $query_str):mixed
+    function db_first(string $table, string $query_str,string $select='*'):mixed
     {
-        $query = mysqli_query($GLOBALS['connect'], "select * from ".$table." ".$query_str);
+        $query = mysqli_query($GLOBALS['connect'], "select ".$select." from ".$table." ".$query_str);
         $result = mysqli_fetch_assoc($query);
         $GLOBALS['query'] = $query;
         return $result;
@@ -165,7 +165,7 @@ if(!function_exists('render_paginate')) {
 }
 
 if(!function_exists('db_paginate')) {
-    function db_paginate(string $table, string $query_str, int $limit=15, string $orderby='asc'):array
+    function db_paginate(string $table, string $query_str, int $limit=15, string $orderby='asc',string $select='*'):array
     {
  
         if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) {
@@ -174,7 +174,7 @@ if(!function_exists('db_paginate')) {
             $current_page = 0;
         }
  
-        $query_count = mysqli_query($GLOBALS['connect'], "select COUNT(id) from ".$table." ".$query_str);
+        $query_count = mysqli_query($GLOBALS['connect'], "select COUNT(".$table.".id) from ".$table." ".$query_str);
         $count = mysqli_fetch_row($query_count);
         $total_records = $count[0];
 
@@ -186,7 +186,7 @@ if(!function_exists('db_paginate')) {
         }
          
         
-        $query = mysqli_query($GLOBALS['connect'], "select * from ".$table." ".$query_str." order by id ".$orderby." LIMIT {$start},{$limit}");
+        $query = mysqli_query($GLOBALS['connect'], "select ".$select." from ".$table." ".$query_str." order by ".$table.".id ".$orderby." LIMIT {$start},{$limit}");
         $num = mysqli_num_rows($query);
         $GLOBALS['query'] = $query;
         return [
