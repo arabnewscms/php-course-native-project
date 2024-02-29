@@ -27,6 +27,37 @@ if(!function_exists('validation')) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.numeric'));
                 }elseif($rule == 'image' && isset($value['tmp_name']) && (!empty($value['tmp_name']) && getimagesize($value['tmp_name']) === false)){
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.image'));
+                }elseif(preg_match('/^in:/i',$rule)){
+                    $ex_rule = explode(':',$rule); 
+                    
+                    // 0 => in
+                    // 1 => user,admin
+                    if(isset($ex_rule[1])){
+                        $ex_in = explode(',', $ex_rule[1]);
+                        if(!empty($ex_in) && is_array($ex_in) && !in_array($value,$ex_in)){
+                            $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.in'));
+                        }
+                    }
+                }elseif(preg_match('/^unique:/i',$rule)){
+                    $ex_rule = explode(':',$rule); 
+                    if(count($ex_rule) > 1 && isset($ex_rule[1])){
+                        $get_unique_info = explode(',',$ex_rule[1]);
+                       
+                        $table = $get_unique_info[0];
+                        $column = isset($get_unique_info[1])?$get_unique_info[1]:$attribute;
+                     
+                        if(isset($get_unique_info[2])){
+                            $sql = "where  ".$column."='".$value."' and id!='".$get_unique_info[2]."'";
+                        }else{
+                            $sql = "where  ".$column."='".$value."'";
+                        }
+                        
+                        $check_unique_db = db_first($table,$sql);
+
+                        if(!empty($check_unique_db)){
+                            $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.unique'));
+                        }
+                    }
                 }
             }
            

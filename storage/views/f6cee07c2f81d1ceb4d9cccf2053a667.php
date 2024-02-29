@@ -26,6 +26,12 @@
                 <?php echo  trans('admin.news') ; ?>
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="<?php echo  aurl('users') ; ?>">
+              <i class="fa fa-users"></i>
+                <?php echo  trans('admin.users') ; ?>
+              </a>
+            </li>
              
           </ul>
 
