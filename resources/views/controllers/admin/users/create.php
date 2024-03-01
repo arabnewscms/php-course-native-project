@@ -17,5 +17,6 @@ $data['password'] = bcrypt($data['password']);
 
 db_create('users',$data);
 session_forget('old');
+session('success',trans('admin.added'));
 
 redirect(aurl('users'));

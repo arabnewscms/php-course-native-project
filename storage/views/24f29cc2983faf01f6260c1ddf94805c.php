@@ -20,5 +20,6 @@ if(!empty($data['password'])){
 } 
 
 db_update('users',$data,request('id'));
- 
+session('success',trans('admin.updated'));
+session_forget('old');
 redirect(aurl('users/edit?id='.request('id')));

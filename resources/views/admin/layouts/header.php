@@ -36,6 +36,7 @@ if(session_has('locale')) {
 	<link href="{{url('assets/admin')}}/css/style.css" rel="stylesheet">
 	<link href="{{url('assets/admin')}}/css/headers.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 	<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
 	<style>
            
@@ -75,3 +76,13 @@ if(session_has('locale')) {
 view('admin.layouts.navbar');
 view('admin.layouts.sidebar');
 ?>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+@if(any_errors())
+	<div class="alert alert-danger">
+		<ol>
+			@foreach(all_errors() as $error)
+			<li><?php echo $error ?></li>
+			@endforeach
+		</ol>
+	</div>
+	@endif

@@ -7,7 +7,7 @@ $user = db_find('users', request('id'));
 redirect_if(empty($user), aurl('users'));
 
 ?>
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+ 
 	<div
 		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 		<h2> {{ trans('admin.users') }} - {{ trans('admin.show') }} #{{ $user['name'] }}</h2>
@@ -43,7 +43,7 @@ redirect_if(empty($user), aurl('users'));
 		</div>
 	</div>
 
-</main>
+ 
 <?php
 view('admin.layouts.footer');
 ?>
