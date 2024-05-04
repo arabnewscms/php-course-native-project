@@ -13,5 +13,6 @@ $data['icon'] = store_file($data['icon'], 'categories/'.file_ext($data['icon'])[
  
 db_create('categories',$data);
 session_flash('old');
-session('success',trans('admin.success_message'));
+session('success',trans('admin.added'));
+
 redirect(aurl('categories'));

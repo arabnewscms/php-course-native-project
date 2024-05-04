@@ -1,0 +1,16 @@
+<?php 
+//$argv
+if(php_sapi_name() == 'cli') {
+    $str = $_SERVER['argv'];
+    
+    if($str[1] == 'view:clear') {
+        $path = 'storage/views';
+        $files = glob($path.'/*');
+        foreach($files as $file) {
+            if(file_exists($file)) {
+                unlink($file);
+            }
+        }
+        echo 'Views is cleared '.PHP_EOL;
+    }
+}

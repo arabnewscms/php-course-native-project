@@ -11,4 +11,6 @@ return [
  'email'=>'Email',
  'mobile'=>'Mobile',
  'address'=>'Address',
+ 'sitename'=>'The News',
+ 'readmore'=>'Continue reading',
 ];

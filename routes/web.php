@@ -2,10 +2,12 @@
 
 include base_path('routes/admin.php');
 
-route_get('/', 'home');
+route_get('/', 'front.home');
 route_get('lang', 'controllers.set_language');
 route_post('upload', 'controllers.upload');
- 
+
+route_get('category', 'front.categories.category');
+route_get('news', 'front.categories.news');
 
 // route_get('articls');
 // route_get('posts');
