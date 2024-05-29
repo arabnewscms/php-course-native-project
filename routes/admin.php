@@ -18,6 +18,14 @@ route_get(ADMIN.'/categories/edit', 'admin.categories.edit');
 route_post(ADMIN.'/categories/edit', 'controllers.admin.categories.update');
 route_post(ADMIN.'/categories/delete', 'controllers.admin.categories.destroy');
 
+//categories CRUD
+route_get(ADMIN.'/comments', 'admin.comments.index');
+route_get(ADMIN.'/comments/show', 'admin.comments.show');
+route_get(ADMIN.'/comments/edit', 'admin.comments.edit');
+route_post(ADMIN.'/comments/edit', 'controllers.admin.comments.update');
+route_post(ADMIN.'/comments/delete', 'controllers.admin.comments.destroy');
+
+
 // News CRUD
 route_get(ADMIN.'/news', 'admin.news.index');
 route_get(ADMIN.'/news/create', 'admin.news.create');

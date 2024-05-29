@@ -1,6 +1,6 @@
 <?php
 ob_start();
-$helpers = ["bcrypt","request","routing","helper","AES","db","session","auth","mail","translation","validation","storage","view","media"];
+$helpers = ["bcrypt","request","routing","helper","AES","db","session","auth","mail","translation","api","validation","storage","view","media"];
 
 foreach($helpers as $helper) {
     require __DIR__."/helpers/".$helper.".php";

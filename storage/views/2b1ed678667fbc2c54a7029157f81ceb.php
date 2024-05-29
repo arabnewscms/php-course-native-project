@@ -18,7 +18,6 @@ categories.name as category_name
  ;
 redirect_if(empty($news), url('/'));
 
-//$comments = db_paginate('news', 'where category_id="'.$category['id'].'"');
 ?>
 <?php echo view('front.layouts.header', ['title'=>$news['title']]); ?>
  

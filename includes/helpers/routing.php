@@ -69,6 +69,7 @@ if (!function_exists('route_init')) {
             }
  
             if (!is_null(segment()) && !in_array(segment(), array_column($POST_ROUTES, 'segment'))) {
+                http_response_code(404);
                 view('404');
                 exit();
             }

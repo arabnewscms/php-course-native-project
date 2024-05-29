@@ -27,6 +27,18 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="{{ aurl('comments') }}">
+              <i class="fa-regular fa-comments"></i>
+                {{ trans('admin.comments') }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="{{ aurl('news') }}">
+              <i class="fa-regular fa-newspaper"></i>
+                {{ trans('admin.news') }}
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2" href="{{ aurl('users') }}">
               <i class="fa fa-users"></i>
                 {{ trans('admin.users') }}

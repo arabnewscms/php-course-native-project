@@ -3,7 +3,7 @@
 
 
 if(!function_exists('validation')) {
-    function validation(array $attributes, array $trans=null,$http_header='redirect',$back=null)
+    function validation(array $attributes, array $trans=null, $http_header='redirect', $back=null)
     {
         $validations = [];
         $values = [];
@@ -15,6 +15,7 @@ if(!function_exists('validation')) {
             $attribute_validte = [];
             $final_attr = isset($trans[$attribute])?$trans[$attribute]:$attribute;
             foreach(explode('|', $rules) as $rule) {
+                //var_dump($rule);
                 if($rule == 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.email'));
                 } elseif($rule == 'required' && (is_null($value) || empty($value) || (isset($value['tmp_name']) && empty($value['tmp_name'])))) {
@@ -23,39 +24,54 @@ if(!function_exists('validation')) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.integer'));
                 } elseif($rule == 'string' &&  !is_string($value)) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.string'));
-                }elseif($rule == 'numeric' && !is_numeric($value)){
+                } elseif($rule == 'numeric' && !is_numeric($value)) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.numeric'));
-                }elseif($rule == 'image' && isset($value['tmp_name']) && (!empty($value['tmp_name']) && getimagesize($value['tmp_name']) === false)){
+                } elseif($rule == 'image' && isset($value['tmp_name']) && (!empty($value['tmp_name']) && getimagesize($value['tmp_name']) === false)) {
                     $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.image'));
-                }elseif(preg_match('/^in:/i',$rule)){
-                    $ex_rule = explode(':',$rule); 
-                    
-                    // 0 => in
-                    // 1 => user,admin
-                    if(isset($ex_rule[1])){
+                } elseif(preg_match('/^in:/i', $rule)) {
+                    $ex_rule = explode(':', $rule);
+                    if(isset($ex_rule[1])) {
                         $ex_in = explode(',', $ex_rule[1]);
-                        if(!empty($ex_in) && is_array($ex_in) && !in_array($value,$ex_in)){
+                        if(!empty($ex_in) && is_array($ex_in) && !in_array($value, $ex_in)) {
                             $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.in'));
                         }
                     }
-                }elseif(preg_match('/^unique:/i',$rule)){
-                    $ex_rule = explode(':',$rule); 
-                    if(count($ex_rule) > 1 && isset($ex_rule[1])){
-                        $get_unique_info = explode(',',$ex_rule[1]);
+                } elseif(preg_match('/^unique:/i', $rule)) {
+                    $ex_rule = explode(':', $rule);
+                    if(count($ex_rule) > 1 && isset($ex_rule[1])) {
+                        $get_unique_info = explode(',', $ex_rule[1]);
                        
                         $table = $get_unique_info[0];
                         $column = isset($get_unique_info[1])?$get_unique_info[1]:$attribute;
                      
-                        if(isset($get_unique_info[2])){
+                        if(isset($get_unique_info[2])) {
                             $sql = "where  ".$column."='".$value."' and id!='".$get_unique_info[2]."'";
-                        }else{
+                        } else {
                             $sql = "where  ".$column."='".$value."'";
                         }
                         
-                        $check_unique_db = db_first($table,$sql);
+                        $check_unique_db = db_first($table, $sql);
 
-                        if(!empty($check_unique_db)){
+                        if(!empty($check_unique_db)) {
                             $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.unique'));
+                        }
+                    }
+                } elseif(preg_match('/^exists:/i', $rule)) {
+                    $ex_rule = explode(':', $rule);
+                    if(count($ex_rule) > 1 && isset($ex_rule[1])) {
+                        $get_exists_info = explode(',', $ex_rule[1]);
+                        $table = $get_exists_info[0];
+                        $column = isset($get_exists_info[1])?$get_exists_info[1]:$attribute;
+                     
+                        if(isset($get_exists_info[2])) {
+                            $sql = "where  ".$column."='".$value."'";
+                        } else {
+                            $sql = "where  id='".$value."'";
+                        }
+                        
+                        $check_exists_db = db_first($table, $sql);
+                        if(empty($check_exists_db)) {
+                            $attribute_validte[] = str_replace(':attribute', $final_attr, trans('validation.exists'));
                         }
                     }
                 }
@@ -71,22 +87,22 @@ if(!function_exists('validation')) {
 
     
 
-        if(count($validations) > 0){
-            if($http_header == 'redirect'){
+        if(count($validations) > 0) {
+            if($http_header == 'redirect') {
                 // End loop to extract attributes
                 session('old', json_encode($values));
                 session('errors', json_encode($validations));
-                if(!is_null($back)){
+                if(!is_null($back)) {
                     redirect($back);
-                }else{
+                } else {
                     back();
                 }
-            }elseif($http_header == 'api'){
-                return json_encode($validations,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+            } elseif($http_header == 'api') {
+                response($validations, 422);
             }
-         }else{
+        } else {
             return $values;
-         }
+        }
     }
 }
 
@@ -135,17 +151,19 @@ if(!function_exists('get_error')) {
 }
 
 if(!function_exists('end_errors')) {
- function end_errors(){
-    session_flash('errors'); 
- }
+    function end_errors()
+    {
+        session_flash('errors');
+    }
 }
 
 if(!function_exists('old')) {
-    function old($request){
+    function old($request)
+    {
         $old_values = json_decode(session('old'), true);
-        if(is_array($old_values) && !empty($old_values) && in_array($request,array_keys($old_values))){
+        if(is_array($old_values) && !empty($old_values) && in_array($request, array_keys($old_values))) {
             return $old_values[$request];
-        }else{
+        } else {
             return '';
         }
     }

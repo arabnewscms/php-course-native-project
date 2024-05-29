@@ -92,7 +92,7 @@ if(!function_exists('db_find')) {
  * @param int $id
  */
 if(!function_exists('db_first')) {
-    function db_first(string $table, string $query_str,string $select='*'):mixed
+    function db_first(string $table, string $query_str, string $select='*'):mixed
     {
         $query = mysqli_query($GLOBALS['connect'], "select ".$select." from ".$table." ".$query_str);
         $result = mysqli_fetch_assoc($query);
@@ -131,41 +131,53 @@ if(!function_exists('db_get')) {
  * @return array
  */
 if(!function_exists('render_paginate')) {
-    function render_paginate(int $total_pages):string
+    function render_paginate(int $total_pages, $appends):string
     {
+
+     
+        $request_str = '';
+        if(!empty($appends) && count($appends) > 0) {
+            
+            foreach($appends as $k=>$val) {
+                $request_str .= $k.'='.$val.'&';
+            }
+        }
+        $request_str .= 'page=';
+        //var_dump($request_str);
+
         $html =  '<ul class="pagination justify-content-center" dir="ltr">';
         $p_disabled = empty(request('page')) || request('page') == 1?'disabled':'';
 
         $p_number = !empty(request('page')) && is_numeric(request('page'))
-        && request('page') > 0 
+        && request('page') > 0
         && request('page') <= $total_pages?request('page')-1:1;
 
         $html .=  '<li class="page-item">
-                    <a class="page-link '.$p_disabled.'" href="?page='.$p_number.'" aria-label="Previous">
+                    <a class="page-link '.$p_disabled.'" href="?'.$request_str.$p_number.'" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>';
         for($i=1;$i <= $total_pages;$i++) {
-            $active = !empty(request('page')) && request('page') == $i?'active':'';
-            $html  .= '<li class="page-item '.$active.'"> <a href="?page='.$i.'" class="page-link">'.$i.'</a> </li>';
+            $active = (!empty(request('page')) && request('page') == $i) || ($i == 1 && empty(request('page')))?'active':'';
+            $html  .= '<li class="page-item '.$active.'"> <a href="?'.$request_str.$i.'" class="page-link">'.$i.'</a> </li>';
         }
         $n_disabled = !empty(request('page')) && request('page') == $total_pages?'disabled':'';
         $n_number = !empty(request('page')) && is_numeric(request('page'))
-        && request('page') > 0 
+        && request('page') > 0
         && request('page') < $total_pages?request('page')+1:1;
         $html .='<li class="page-item '.$n_disabled.'">
-        <a class="page-link" href="?page='.$n_number.'" aria-label="Next">
+        <a class="page-link" href="?'.$request_str.$n_number.'" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>';
         $html .='</ul>';
-        return $html;
+        return $total_pages > 0?$html:'';
 
     }
 }
 
 if(!function_exists('db_paginate')) {
-    function db_paginate(string $table, string $query_str, int $limit=15, string $orderby='asc',string $select='*'):array
+    function db_paginate(string $table, string $query_str, int $limit=15, string $orderby='asc', string $select='*', array $appends = null):array
     {
  
         if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) {
@@ -192,7 +204,7 @@ if(!function_exists('db_paginate')) {
         return [
             'query'=>$query,
             'num'=>$num,
-            'render'=>render_paginate($total_pages),
+            'render'=>render_paginate($total_pages, $appends),
             'current_page'=>$current_page,
             'limit'=>$limit
         ];
