@@ -19,6 +19,8 @@ return [
  'readmore'=>'المزيد...',
  'news_id'=>'الخبر',
  'comments'=>'التعليقات',
+ 'archives'=>'الارشيف',
+ 'latest_news'=>'اخر الاخبار',
  
 
 ];

@@ -122,6 +122,7 @@ if(!function_exists('db_get')) {
 
 
 
+
 /**
  * search for a multiple and pagination row Data from Database
  * @param string $table
@@ -208,5 +209,13 @@ if(!function_exists('db_paginate')) {
             'current_page'=>$current_page,
             'limit'=>$limit
         ];
+    }
+    
+}
+
+if(!function_exists('db_setting_strict')){
+    function db_setting_strict(){
+        //ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+        mysqli_query($GLOBALS['connect'], "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
     }
 }
